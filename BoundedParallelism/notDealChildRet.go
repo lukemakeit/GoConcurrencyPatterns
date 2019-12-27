@@ -6,7 +6,8 @@ import (
 	"time"
 )
 
-//main goroutine不断发送待处理数据,多个child goroutine负责接收,处理结果直接打印
+// 描述: 启动n个child goroutine从genChan中读取数据,计算出每个元素的平方值后,继续打印结果
+// 优势: 相比buffer chan的两种实现方式, 该方式始终有n 个 child goroutine在运行中,且不会阻塞main goroutine继续执行
 func NotDealChildRet() {
 	srcNums := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 
@@ -28,17 +29,21 @@ func NotDealChildRet() {
 			}
 		}()
 	}
-	// 生产者
-	for _, srcItem := range srcNums {
-		genChan <- srcItem
-	}
-	//关闭genChan,以便让所有goroutine退出
-	close(genChan)
+	go func() {
+		//关闭genChan,以便让所有goroutine退出
+		defer close(genChan)
+		// 生产者
+		for _, srcItem := range srcNums {
+			genChan <- srcItem
+		}
+	}()
+
 	//main等待child goroutine结束
 	wg.Wait()
 	fmt.Println("main goroutine exit...")
 }
 
+// 缺点: main goroutine会在for循环中卡住很长一段时间
 func NotDealChildRetBuffChan01() {
 	srcNums := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 
@@ -68,6 +73,8 @@ func NotDealChildRetBuffChan01() {
 	fmt.Println("main goroutine exit...")
 }
 
+// 缺点: 一次启动len(srcNums)个child goroutine, 而某一时刻只有len(semaphore)个child goroutine在执行耗时操作
+// len(srcNums) 很大时,该方式并不合适
 func NotDealChildRetBuffChan02() {
 	srcNums := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 
