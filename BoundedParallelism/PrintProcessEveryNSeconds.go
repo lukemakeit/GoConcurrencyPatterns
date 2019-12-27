@@ -25,7 +25,7 @@ func PrintProcessEveryNSeconds() {
 	//控制并发度为2,某一时刻只有2个child goroutine在运行中
 	limit := 2
 	for worker := 0; worker < limit; worker++ {
-		// 消费者
+		// 第二stage:进行平方计算
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
@@ -55,7 +55,7 @@ func PrintProcessEveryNSeconds() {
 		}()
 	}
 	go func() {
-		// 生产者
+		// 第一stage:生产者
 		defer close(genChan)
 
 		for index, srcItem := range srcNums {
@@ -79,6 +79,7 @@ func PrintProcessEveryNSeconds() {
 	retMap := make(map[int]int)
 	ok := false
 	for {
+		// 第三stage: 消费者
 		select {
 		case retItem, ok = <-retChan:
 			if !ok {

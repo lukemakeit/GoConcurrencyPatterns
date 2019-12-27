@@ -47,7 +47,7 @@ func doSqure(num int, ctx context.Context, semaphore chan bool, retChan chan *sq
 // - 该方案并非按照输入顺序计算每个元素的平方值,计算平方值操作是乱序的,可能 4*4计算完后,计算 13*13,再计算 12*12 ...
 // - 该方案仅仅是在接收计算结果时,根据输入顺序接收计算结果;
 // 因此如果num == 1 对应的 child goroutine如果最后才被执行,那么大量retChanList中结果最好才会被接收
-func ReturnByInputOrder01() {
+func ReceiveRetByInputOrder01() {
 	srcNums := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 
 	// 为每个srcNum创建一个返回值接收channel,因此需提前知道srcNums的个数
@@ -115,7 +115,7 @@ func doSqure02(num int, ctx context.Context, retChan chan *squreItem) {
 
 // 描述:按照输入顺序去计算每个元素的结果,接收每个元素的结果
 // 该方案将输入元素 第一批 完成平方计算，并将结果获取 再进行下一批 元素平方计算,结果获取...以此类推
-func ReturnByInputOrder02() {
+func ReceiveRetByInputOrder02() {
 	srcNums := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 
 	// 为每个srcNum创建一个返回值接收channel,因此需提前知道srcNums的个数
@@ -134,7 +134,7 @@ func ReturnByInputOrder02() {
 	//控制并发度为4
 	limit := 4
 	for worker := 0; worker < limit; worker++ {
-		// 消费者
+		// 第二stage:进行平方计算
 		go func() {
 			for genItem := range genChan {
 				doSqure02(genItem.NumItem, ctx, retChanList[genItem.Index])
@@ -143,7 +143,7 @@ func ReturnByInputOrder02() {
 	}
 
 	go func() {
-		// 生产者
+		// 第一stage:生产者
 		defer close(genChan)
 
 		for index, srcItem := range srcNums {
@@ -163,6 +163,7 @@ func ReturnByInputOrder02() {
 	var ok bool
 	var retItem *squreItem
 	for _, retChan := range retChanList {
+		// 第三stage: 消费者
 		select {
 		case retItem = <-retChan:
 			ok = true

@@ -22,7 +22,7 @@ func DealChildRet() {
 	//控制并发度为4,某一时刻只有4个child goroutine在运行中
 	limit := 4
 	for worker := 0; worker < limit; worker++ {
-		// 消费者
+		// 第二stage:进行平方计算
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
@@ -42,7 +42,7 @@ func DealChildRet() {
 		}()
 	}
 	go func() {
-		// 生产者
+		// 第一stage:生产者
 		defer close(genChan)
 
 		for _, srcItem := range srcNums {
@@ -56,6 +56,7 @@ func DealChildRet() {
 	}()
 
 	for retItem := range retChan {
+		// 第三stage: 消费者
 		fmt.Printf("num:%d  squreRet=>%d\n", retItem.SrcNum, retItem.SqureRet)
 	}
 

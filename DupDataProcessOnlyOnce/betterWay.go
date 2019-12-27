@@ -29,7 +29,7 @@ func DupDataProcessOnlyOnceBetter01() {
 
 	//启动5个进程来执行求平方操作
 	for worker := 0; worker < limiter; worker++ {
-		// 消费者
+		// 第二stage:进行平方计算并保存
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
@@ -63,7 +63,7 @@ func DupDataProcessOnlyOnceBetter01() {
 		}()
 	}
 	go func() {
-		// 生产者
+		// 第一stage:生产者
 		defer close(genChan)
 
 		for _, srcIem := range srcData {
@@ -133,6 +133,7 @@ func DupDataProcessOnlyOnceBetter02() {
 
 	//启动5个进程来执行求平方操作
 	for worker := 0; worker < limiter; worker++ {
+		// 第二stage:进行平方计算
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
@@ -175,7 +176,7 @@ func DupDataProcessOnlyOnceBetter02() {
 		}()
 	}
 	go func() {
-		// 生产者
+		// 第一stage:生产者
 		defer close(genChan)
 
 		for _, srcIem := range srcData {
@@ -195,6 +196,7 @@ func DupDataProcessOnlyOnceBetter02() {
 	var ok bool
 	var retItem *squreEntry
 	for {
+		// 第三stage: 消费者
 		select {
 		case retItem,ok=<-retChan:
 			if ok == false{

@@ -50,6 +50,7 @@ func NotDealChildRetBuffChan01() {
 	semaphore := make(chan struct{}, 4)
 	wg := sync.WaitGroup{}
 	for _, srcItem := range srcNums {
+		// 消费者
 		wg.Add(1)
 		go func(num int) {
 			defer wg.Done()
@@ -81,6 +82,7 @@ func NotDealChildRetBuffChan02() {
 	semaphore := make(chan struct{}, 4)
 	wg := sync.WaitGroup{}
 	for _, srcItem := range srcNums {
+		// 消费者
 		wg.Add(1)
 		// 通过bufferChan控制并发,某一时刻运行中的child goroutine数等于len(semaphore),这里是4个
 		// main goroutine会在for循环中卡住较长时间,直到只有最后4个元素才能跳出for循环

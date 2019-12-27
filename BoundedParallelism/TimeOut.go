@@ -19,7 +19,7 @@ func TimeOut01() {
 	//控制并发度为2,某一时刻只有2个child goroutine在运行中
 	limit := 2
 	for worker := 0; worker < limit; worker++ {
-		// 消费者
+		// 第二stage:进行平方计算
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
@@ -49,7 +49,7 @@ func TimeOut01() {
 		}()
 	}
 	go func() {
-		// 生产者
+		// 第一stage:生产者
 		defer close(genChan)
 
 		for _, srcItem := range srcNums {
@@ -72,6 +72,7 @@ func TimeOut01() {
 	var retItem *squreItem
 	ok := false
 	for {
+		// 第三stage: 消费者
 		select {
 		case retItem, ok = <-retChan:
 			if !ok {
@@ -113,7 +114,7 @@ func TimeOut02() {
 	//控制并发度为2,某一时刻只有2个child goroutine在运行中
 	limit := 2
 	for worker := 0; worker < limit; worker++ {
-		// 消费者
+		// 第二stage:进行平方计算
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
@@ -143,7 +144,7 @@ func TimeOut02() {
 		}()
 	}
 	go func() {
-		// 生产者
+		// 第一stage:生产者
 		defer close(genChan)
 
 		for _, srcItem := range srcNums {
@@ -171,6 +172,7 @@ func TimeOut02() {
 	var retItem *squreItem
 	ok := false
 	for {
+		// 第三stage: 消费者
 		select {
 		case retItem, ok = <-retChan:
 			if !ok {
@@ -212,7 +214,7 @@ func TimeOutWithContext() {
 	//控制并发度为2,某一时刻只有2个child goroutine在运行中
 	limit := 2
 	for worker := 0; worker < limit; worker++ {
-		// 消费者
+		// 第二stage:进行平方计算
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
@@ -242,7 +244,7 @@ func TimeOutWithContext() {
 		}()
 	}
 	go func() {
-		// 生产者
+		// 第一stage:生产者
 		defer close(genChan)
 
 		for _, srcItem := range srcNums {
@@ -262,6 +264,7 @@ func TimeOutWithContext() {
 	var retItem *squreItem
 	ok := false
 	for {
+		// 第三stage: 消费者
 		select {
 		case retItem, ok = <-retChan:
 			if !ok {
