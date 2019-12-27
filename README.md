@@ -21,31 +21,31 @@
 
 
 #### pipeline并发案例
-- [普通流水线(串行)](https://github.com/lukexwang/GoConcurrencyPatterns/blob/96b3b9420cdd7276491acd62086c2445cef184b3/pipelineDemos/SerialPipeline.go#L36)
-- [Fan-out 和 Fan-in](https://github.com/lukexwang/GoConcurrencyPatterns/blob/96b3b9420cdd7276491acd62086c2445cef184b3/pipelineDemos/FanInFanOut.go)
-- [中途取消(发生错误后不再继续)](https://github.com/lukexwang/GoConcurrencyPatterns/blob/96b3b9420cdd7276491acd62086c2445cef184b3/pipelineDemos/CanceledWithoutFinish.go#L77)
+- [普通流水线(串行)](https://github.com/lukexwang/GoConcurrencyPatterns/blob/4799ecb06a38774bf35fe26033fc057de30dc14f/pipelineDemos/SerialPipeline.go#L36)
+- [Fan-out 和 Fan-in](https://github.com/lukexwang/GoConcurrencyPatterns/blob/4799ecb06a38774bf35fe26033fc057de30dc14f/pipelineDemos/FanInFanOut.go)
+- [中途取消(发生错误后不再继续)](https://github.com/lukexwang/GoConcurrencyPatterns/blob/4799ecb06a38774bf35fe26033fc057de30dc14f/pipelineDemos/CanceledWithoutFinish.go#L77)
 
 #### 并发控制案例
 - 无需接收child goroutine返回结果
-    - [非 bufferChannel 完成并发控制(推荐)](https://github.com/lukexwang/GoConcurrencyPatterns/blob/96b3b9420cdd7276491acd62086c2445cef184b3/BoundedParallelism/notDealChildRet.go#L10)
-    - [bufferChannel 完成并发控制方式一](https://github.com/lukexwang/GoConcurrencyPatterns/blob/96b3b9420cdd7276491acd62086c2445cef184b3/BoundedParallelism/notDealChildRet.go#L42)
-    - [bufferChannel 完成并发控制方式二](https://github.com/lukexwang/GoConcurrencyPatterns/blob/96b3b9420cdd7276491acd62086c2445cef184b3/BoundedParallelism/notDealChildRet.go#L71)
+    - [非 bufferChannel 完成并发控制(推荐)](https://github.com/lukexwang/GoConcurrencyPatterns/blob/4799ecb06a38774bf35fe26033fc057de30dc14f/BoundedParallelism/notDealChildRet.go#L10)
+    - [bufferChannel 完成并发控制方式一](https://github.com/lukexwang/GoConcurrencyPatterns/blob/4799ecb06a38774bf35fe26033fc057de30dc14f/BoundedParallelism/notDealChildRet.go#L42)
+    - [bufferChannel 完成并发控制方式二](https://github.com/lukexwang/GoConcurrencyPatterns/blob/4799ecb06a38774bf35fe26033fc057de30dc14f/BoundedParallelism/notDealChildRet.go#L71)
 - 需接收child goroutine返回结果
-    - [非 bufferChannel 完成并发控制(推荐)](https://github.com/lukexwang/GoConcurrencyPatterns/blob/96b3b9420cdd7276491acd62086c2445cef184b3/BoundedParallelism/DealChildRet.go#L16)
-    - [bufferChannel 完成并发控制方式一](https://github.com/lukexwang/GoConcurrencyPatterns/blob/96b3b9420cdd7276491acd62086c2445cef184b3/BoundedParallelism/DealChildRet.go#L68)
-    - [bufferChannel 完成并发控制方式二](https://github.com/lukexwang/GoConcurrencyPatterns/blob/96b3b9420cdd7276491acd62086c2445cef184b3/BoundedParallelism/DealChildRet.go#L118)
-    - [中途取消(发生错误后不再继续)](https://github.com/lukexwang/GoConcurrencyPatterns/blob/96b3b9420cdd7276491acd62086c2445cef184b3/BoundedParallelism/CanceledErrOccur.go)
+    - [非 bufferChannel 完成并发控制(推荐)](https://github.com/lukexwang/GoConcurrencyPatterns/blob/4799ecb06a38774bf35fe26033fc057de30dc14f/BoundedParallelism/DealChildRet.go#L16)
+    - [bufferChannel 完成并发控制方式一](https://github.com/lukexwang/GoConcurrencyPatterns/blob/4799ecb06a38774bf35fe26033fc057de30dc14f/BoundedParallelism/DealChildRet.go#L68)
+    - [bufferChannel 完成并发控制方式二](https://github.com/lukexwang/GoConcurrencyPatterns/blob/4799ecb06a38774bf35fe26033fc057de30dc14f/BoundedParallelism/DealChildRet.go#L118)
+    - [中途取消(发生错误后不再继续)](https://github.com/lukexwang/GoConcurrencyPatterns/blob/4799ecb06a38774bf35fe26033fc057de30dc14f/BoundedParallelism/CanceledErrOccur.go)
     - 超时控制,超时情况下保证所有child goroutine正常退出
-        - [Timer方式](https://github.com/lukexwang/GoConcurrencyPatterns/blob/96b3b9420cdd7276491acd62086c2445cef184b3/BoundedParallelism/TimeOut.go#L12)
-        - [单独的child goroutine发送超时信号](https://github.com/lukexwang/GoConcurrencyPatterns/blob/96b3b9420cdd7276491acd62086c2445cef184b3/BoundedParallelism/TimeOut.go#L106)
-        - [context方式](https://github.com/lukexwang/GoConcurrencyPatterns/blob/96b3b9420cdd7276491acd62086c2445cef184b3/BoundedParallelism/TimeOut.go#L204)
-    - [定期打印处理进度](https://github.com/lukexwang/GoConcurrencyPatterns/blob/96b3b9420cdd7276491acd62086c2445cef184b3/BoundedParallelism/PrintProcessEveryNSeconds.go)
+        - [Timer方式](https://github.com/lukexwang/GoConcurrencyPatterns/blob/4799ecb06a38774bf35fe26033fc057de30dc14f/BoundedParallelism/TimeOut.go#L12)
+        - [单独的child goroutine发送超时信号](https://github.com/lukexwang/GoConcurrencyPatterns/blob/4799ecb06a38774bf35fe26033fc057de30dc14f/BoundedParallelism/TimeOut.go#L106)
+        - [context方式](https://github.com/lukexwang/GoConcurrencyPatterns/blob/4799ecb06a38774bf35fe26033fc057de30dc14f/BoundedParallelism/TimeOut.go#L204)
+    - [定期打印处理进度](https://github.com/lukexwang/GoConcurrencyPatterns/blob/4799ecb06a38774bf35fe26033fc057de30dc14f/BoundedParallelism/PrintProcessEveryNSeconds.go)
     - 根据输入顺序接收每个元素的结果
-        - [bufferChannel 控制并发度](https://github.com/lukexwang/GoConcurrencyPatterns/blob/96b3b9420cdd7276491acd62086c2445cef184b3/BoundedParallelism/ReturnByInputOrder.go#L50)
-        - [非bufferChannel 控制并发度(推荐)](https://github.com/lukexwang/GoConcurrencyPatterns/blob/96b3b9420cdd7276491acd62086c2445cef184b3/BoundedParallelism/ReturnByInputOrder.go#L118)
+        - [bufferChannel 控制并发度](https://github.com/lukexwang/GoConcurrencyPatterns/blob/4799ecb06a38774bf35fe26033fc057de30dc14f/BoundedParallelism/ReceiveRetByInputOrder.go#L50)
+        - [非bufferChannel 控制并发度(推荐)](https://github.com/lukexwang/GoConcurrencyPatterns/blob/4799ecb06a38774bf35fe26033fc057de30dc14f/BoundedParallelism/ReceiveRetByInputOrder.go#L118)
 - 保证重复数据只被处理一次
-    - [传统lock方式实现](https://github.com/lukexwang/GoConcurrencyPatterns/blob/96b3b9420cdd7276491acd62086c2445cef184b3/DupDataProcessOnlyOnce/ByLock.go#L15)
-    - [lock+channel实现方式(推荐)](https://github.com/lukexwang/GoConcurrencyPatterns/blob/96b3b9420cdd7276491acd62086c2445cef184b3/DupDataProcessOnlyOnce/betterWay.go#L113),该方式仅需"传统lock方式实现" 1/4 时间
+    - [传统lock方式实现](https://github.com/lukexwang/GoConcurrencyPatterns/blob/4799ecb06a38774bf35fe26033fc057de30dc14f/DupDataProcessOnlyOnce/ByLock.go#L15)
+    - [lock+channel实现方式(推荐)](https://github.com/lukexwang/GoConcurrencyPatterns/blob/4799ecb06a38774bf35fe26033fc057de30dc14f/DupDataProcessOnlyOnce/betterWay.go#L113),该方式仅需"传统lock方式实现" 1/4 时间
     
 参考资料:  
 [Go 译文之如何构建并发 Pipeline](https://segmentfault.com/a/1190000019984518)  
